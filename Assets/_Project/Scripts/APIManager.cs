@@ -4,11 +4,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class APIManagerr : MonoBehaviour
+public class APIManager : MonoBehaviour
 {
     private static readonly string baseURL = "https://raw.githubusercontent.com/anuj-chouhan/Unity-Ar-Assets/main/HostedStuffs";
 
-    public static APIManagerr Instance;
+    public static APIManager Instance;
     private void Awake()
     {
         if (Instance == null)
