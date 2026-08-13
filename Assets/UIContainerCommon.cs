@@ -34,6 +34,22 @@ public class UIContainerCommon : MonoBehaviour
 
     private UICanvasPanelManager panelManager;
 
+
+    public static UIContainerCommon instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.LogError("Singleton Error Here" + transform.name);
+        }
+    }
+
+
     private void Start()
     {
         panelManager = UICanvasPanelManager.instance;
@@ -81,4 +97,8 @@ public class UIContainerCommon : MonoBehaviour
         }
     }
 
+    public void SetTabExplore()
+    {
+        TabSwitcher(Tabs.Explorer);
+    }
 }
