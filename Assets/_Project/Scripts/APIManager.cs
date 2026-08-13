@@ -4,6 +4,44 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
+public enum Connections
+{
+    Connected,
+    Fetching,
+    Failed,
+}
+
+public enum ContentStatus
+{
+    Ready,
+    APIResponseReceived,
+    Downloading,
+    Loaded,
+    Error,
+}
+
+public static class APIEvents
+{
+    public static event System.Action<Connections> OnConnection;
+    public static event System.Action<int> OnResponse;
+    public static event System.Action<ContentStatus> OnContentStatus;
+
+    public static void Connection(Connections connection)
+    {
+        OnConnection?.Invoke(connection);
+    }
+
+    public static void Response(int responseCode)
+    {
+        OnResponse?.Invoke(responseCode);
+    }
+    public static void ContentStatus(ContentStatus contentStatus)
+    {
+        OnContentStatus?.Invoke(contentStatus);
+    }
+}
+
+
 public class APIManager : MonoBehaviour
 {
     private static readonly string baseURL = "https://raw.githubusercontent.com/anuj-chouhan/Unity-Ar-Assets/main/HostedStuffs";
@@ -20,6 +58,11 @@ public class APIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void StopAllFetching()
+    {
+        StopAllCoroutines();
     }
 
     public void GetTextFromServer(Action<string> onSuccess, Action onError = null)
@@ -49,11 +92,6 @@ public class APIManager : MonoBehaviour
 
         Debug.Log("The Video Is Loaded");
         return url;
-    }
-
-    public void StopAllFetching()
-    {
-        StopAllCoroutines();
     }
 
     private IEnumerator DownloadText(Action<string> onSuccess, Action onError)
