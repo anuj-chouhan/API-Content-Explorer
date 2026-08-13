@@ -15,6 +15,7 @@ public enum ContentStatus
 {
     Ready,
     APIResponseReceived,
+    Fetching,
     Downloading,
     Loaded,
     Error,
@@ -128,7 +129,7 @@ public class APIManager : MonoBehaviour
         Debug.Log("The Video URL Is Ready");
 
         APIEvents.Response("-");
-        APIEvents.ContentStatus(ContentStatus.Ready);
+        APIEvents.ContentStatus(ContentStatus.Fetching);
 
         return url;
     }
@@ -138,7 +139,7 @@ public class APIManager : MonoBehaviour
         string endPoint = "/Text.txt";
         string url = baseURL + endPoint;
 
-        APIEvents.ContentStatus(ContentStatus.Downloading);
+        APIEvents.ContentStatus(ContentStatus.Fetching);
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {

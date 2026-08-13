@@ -68,6 +68,7 @@ public class UIContainerContentPreview : MonoBehaviour
         }
 
         [SerializeField] private CanvasGroup txtAPIResponseReceived;
+        [SerializeField] private CanvasGroup txtFetching;
         [SerializeField] private CanvasGroup txtDownloading;
         [SerializeField] private CanvasGroup txtError;
         [SerializeField] private CanvasGroup txtLoaded;
@@ -83,6 +84,7 @@ public class UIContainerContentPreview : MonoBehaviour
             txtReady.gameObject.SetActive(false);
             txtAPIResponseReceived.gameObject.SetActive(false);
             txtDownloading.gameObject.SetActive(false);
+            txtFetching.gameObject.SetActive(false);
             txtLoaded.gameObject.SetActive(false);
             txtError.gameObject.SetActive(false);
 
@@ -100,6 +102,10 @@ public class UIContainerContentPreview : MonoBehaviour
                     txtDownloading.gameObject.SetActive(true);
                     break;
 
+                case ContentStatus.Fetching:
+                    txtFetching.gameObject.SetActive(true);
+                    break;
+
                 case ContentStatus.Loaded:
                     txtLoaded.gameObject.SetActive(true);
                     break;
@@ -108,38 +114,6 @@ public class UIContainerContentPreview : MonoBehaviour
                     txtError.gameObject.SetActive(true);
                     break;
 
-            }
-        }
-
-        private void SetStatus(ContentPreviewStatus status)
-        {
-            txtAPIResponseReceived.gameObject.SetActive(true);
-            txtDownloading.gameObject.SetActive(true);
-            txtError.gameObject.SetActive(true);
-            txtLoaded.gameObject.SetActive(true);
-            txtReady.gameObject.SetActive(true);
-
-            switch (status)
-            {
-                case ContentPreviewStatus.APIResponseReceived:
-                    txtAPIResponseReceived.gameObject.SetActive(false);
-                    break;
-
-                case ContentPreviewStatus.Download:
-                    txtDownloading.gameObject.SetActive(false);
-                    break;
-
-                case ContentPreviewStatus.Error:
-                    txtError.gameObject.SetActive(false);
-                    break;
-
-                case ContentPreviewStatus.Loaded:
-                    txtLoaded.gameObject.SetActive(false);
-                    break;
-
-                case ContentPreviewStatus.Ready:
-                    txtReady.gameObject.SetActive(false);
-                    break;
             }
         }
     }
