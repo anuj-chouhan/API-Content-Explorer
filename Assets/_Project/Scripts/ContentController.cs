@@ -9,7 +9,7 @@ public class ContentController : MonoBehaviour
 
     public static ContentController instance;
 
-    private UIPanelExplorer.DataContentDisplay contentDisplayHelper;
+    private DataContentDisplay contentDisplayHelper;
     private APIManager apiManager;
     private GameObject currentModel;
 
