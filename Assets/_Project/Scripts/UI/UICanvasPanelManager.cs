@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class UICanvasPanelManager : MonoBehaviour
 {
+    [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject panelOverview;
     [SerializeField] private GameObject panelExplorer;
     [SerializeField] private GameObject panelTechnical;
@@ -18,6 +19,9 @@ public class UICanvasPanelManager : MonoBehaviour
         {
             Debug.LogError("Singleton Error Here" + transform.name);
         }
+
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
     }
 
     private enum Panels
