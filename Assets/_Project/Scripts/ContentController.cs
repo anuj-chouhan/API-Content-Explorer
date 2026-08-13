@@ -9,7 +9,7 @@ public class ContentController : MonoBehaviour
 
     public static ContentController instance;
 
-    private DataContentDisplay contentDisplayHelper;
+    private UIContainerContentPreview.DataContentDisplay contentDisplayHelper;
     private APIManager apiManager;
     private GameObject currentModel;
 
@@ -27,7 +27,7 @@ public class ContentController : MonoBehaviour
 
     private void Start()
     {
-        contentDisplayHelper = UIPanelExplorer.instance.GetDataContentDisplay;
+        contentDisplayHelper = UIContainerContentPreview.instance.GetDataContentDisplay;
         apiManager = APIManager.Instance;
 
         ClearContent();

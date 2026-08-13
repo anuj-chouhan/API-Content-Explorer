@@ -1,16 +1,98 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIContainerContentPanel : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [System.Serializable]
+    private class DataContentPanel
     {
-        
+        [SerializeField] private TMP_Dropdown dropdownContentType;
+        [SerializeField] private Button buttonFetchContent;
+        [SerializeField] private Button buttonClearContent;
+
+        private ContentTypes currentContentType;
+
+        private enum ContentTypes
+        {
+            Text,
+            Image,
+            Video,
+            Model
+        }
+
+        private ContentController contentController;
+
+        public void Intialize()
+        {
+            contentController = ContentController.instance;
+            dropdownContentType.onValueChanged.AddListener(Dropdown);
+            buttonFetchContent.onClick.AddListener(FetchContent);
+            buttonClearContent.onClick.AddListener(() =>
+            {
+                contentController.ClearContent();
+            });
+        }
+
+        private void FetchContent()
+        {
+            switch (currentContentType)
+            {
+                case ContentTypes.Text:
+                    contentController.LoadText();
+                    break;
+
+                case ContentTypes.Image:
+                    contentController.LoadImage();
+                    break;
+
+                case ContentTypes.Video:
+                    contentController.LoadVideo();
+                    break;
+
+                case ContentTypes.Model:
+                    contentController.LoadModel();
+                    break;
+            }
+        }
+
+        private void Dropdown(int value)
+        {
+            switch (value)
+            {
+                case 0:
+                    currentContentType = ContentTypes.Text;
+                    break;
+
+                case 1:
+                    currentContentType = ContentTypes.Image;
+                    break;
+
+                case 2:
+                    currentContentType = ContentTypes.Video;
+                    break;
+
+                case 3:
+                    currentContentType = ContentTypes.Model;
+                    break;
+
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    [System.Serializable]
+    private class DataAPIStatus
     {
-        
+        [SerializeField] private TextMeshProUGUI textConnectionStatus;
+        [SerializeField] private TextMeshProUGUI textResponseStatus;
+    }
+
+
+    [SerializeField] private DataContentPanel dataContentPanel;
+    [SerializeField] private DataAPIStatus dataAPIStatus;
+
+    private void Start()
+    {
+        dataContentPanel.Intialize();
     }
 }

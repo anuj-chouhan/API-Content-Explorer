@@ -903,43 +903,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &1576398413838258223
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2927041710078047706}
-  m_Layer: 5
-  m_Name: Container Holder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2927041710078047706
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1576398413838258223}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5166187054942477320}
-  - {fileID: 8739076878487186238}
-  m_Father: {fileID: 7841819997282378093}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -590}
-  m_SizeDelta: {x: 1686.25, y: 806}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1597529836997213369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1791,7 +1754,8 @@ GameObject:
   - component: {fileID: 2054192270071564136}
   - component: {fileID: 7041546678004183539}
   - component: {fileID: 3629069280109755828}
-  - component: {fileID: 2878811796419509355}
+  - component: {fileID: 4211888514758253270}
+  - component: {fileID: 7720195280261216641}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1937,7 +1901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonExplore: {fileID: 4848977125897871532}
---- !u!114 &2878811796419509355
+--- !u!114 &4211888514758253270
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1946,7 +1910,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3010271439782830954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 658bc69d5a6c7224586f53f2b660632b, type: 3}
+  m_Script: {fileID: 11500000, guid: 46c6e8b16f9b82f46933ec088600aa5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataContentPanel:
+    dropdownContentType: {fileID: 2294591075256059573}
+    buttonFetchContent: {fileID: 5469220589153519161}
+    buttonClearContent: {fileID: 287205205762081368}
+  dataAPIStatus:
+    textConnectionStatus: {fileID: 943940244681130010}
+    textResponseStatus: {fileID: 5660436211146302387}
+--- !u!114 &7720195280261216641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010271439782830954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071bd28430efd5547a9838d8556e4eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dataContentDisplay:
@@ -1961,13 +1944,6 @@ MonoBehaviour:
     txtError: {fileID: 6026110311319825587}
     txtLoaded: {fileID: 8601269137482715628}
     txtReady: {fileID: 6778410121706197906}
-  dataContentPanel:
-    dropdownContentType: {fileID: 2294591075256059573}
-    buttonFetchContent: {fileID: 5469220589153519161}
-    buttonClearContent: {fileID: 287205205762081368}
-  dataAPIStatus:
-    textConnectionStatus: {fileID: 943940244681130010}
-    textResponseStatus: {fileID: 5660436211146302387}
 --- !u!1 &3090494553540199602
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,7 +2971,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2927041710078047706}
+  - {fileID: 5166187054942477320}
+  - {fileID: 8739076878487186238}
   m_Father: {fileID: 4962430100413874796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3191,7 +3168,7 @@ GameObject:
   - component: {fileID: 7132206172242915445}
   - component: {fileID: 667857017452513367}
   m_Layer: 0
-  m_Name: Container Content
+  m_Name: Container Content Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3212,11 +3189,11 @@ RectTransform:
   - {fileID: 9061742884049221691}
   - {fileID: 547193494900692673}
   - {fileID: 5775062049992377496}
-  m_Father: {fileID: 2927041710078047706}
+  m_Father: {fileID: 7841819997282378093}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -602.125, y: -403}
+  m_AnchoredPosition: {x: -602.125, y: -590}
   m_SizeDelta: {x: 482, y: 806}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7132206172242915445
@@ -4005,11 +3982,11 @@ RectTransform:
   - {fileID: 4155938643125376521}
   - {fileID: 2894930028900832780}
   - {fileID: 5629735546682888247}
-  m_Father: {fileID: 2927041710078047706}
+  m_Father: {fileID: 7841819997282378093}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 256.625, y: -403}
+  m_AnchoredPosition: {x: 256.625, y: -590}
   m_SizeDelta: {x: 1173, y: 806}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1276649828266876937
