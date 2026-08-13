@@ -28,6 +28,7 @@ public class UIContainerCommon : MonoBehaviour
         Technical,
     }
 
+    [SerializeField] private Button buttonAPIContentExplorer;
     [SerializeField] private TabButton tabButtonOverview;
     [SerializeField] private TabButton tabButtonExplorer;
     [SerializeField] private TabButton tabButtonTechnical;
@@ -53,6 +54,11 @@ public class UIContainerCommon : MonoBehaviour
     private void Start()
     {
         panelManager = UICanvasPanelManager.instance;
+
+        buttonAPIContentExplorer.onClick.AddListener(() =>
+        {
+            TabSwitcher(Tabs.Overview);
+        });
 
         tabButtonOverview.button.onClick.AddListener(() =>
         {
