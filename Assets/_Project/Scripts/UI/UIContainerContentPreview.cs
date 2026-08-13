@@ -68,15 +68,53 @@ public class UIContainerContentPreview : MonoBehaviour
         }
 
         [SerializeField] private CanvasGroup txtAPIResponseReceived;
-        [SerializeField] private CanvasGroup txtDownload;
+        [SerializeField] private CanvasGroup txtDownloading;
         [SerializeField] private CanvasGroup txtError;
         [SerializeField] private CanvasGroup txtLoaded;
         [SerializeField] private CanvasGroup txtReady;
 
-        public void SetStatus(ContentPreviewStatus status)
+        public void Initialize()
+        {
+            APIEvents.OnContentStatus += APIEvents_OnContentStatus;
+        }
+
+        private void APIEvents_OnContentStatus(ContentStatus ContentStatus)
+        {
+            txtReady.gameObject.SetActive(false);
+            txtAPIResponseReceived.gameObject.SetActive(false);
+            txtDownloading.gameObject.SetActive(false);
+            txtLoaded.gameObject.SetActive(false);
+            txtError.gameObject.SetActive(false);
+
+            switch (ContentStatus)
+            {
+                case ContentStatus.Ready:
+                    txtReady.gameObject.SetActive(true);
+                    break;
+
+                case ContentStatus.APIResponseReceived:
+                    txtAPIResponseReceived.gameObject.SetActive(true);
+                    break;
+
+                case ContentStatus.Downloading:
+                    txtDownloading.gameObject.SetActive(true);
+                    break;
+
+                case ContentStatus.Loaded:
+                    txtLoaded.gameObject.SetActive(true);
+                    break;
+
+                case ContentStatus.Error:
+                    txtError.gameObject.SetActive(true);
+                    break;
+
+            }
+        }
+
+        private void SetStatus(ContentPreviewStatus status)
         {
             txtAPIResponseReceived.gameObject.SetActive(true);
-            txtDownload.gameObject.SetActive(true);
+            txtDownloading.gameObject.SetActive(true);
             txtError.gameObject.SetActive(true);
             txtLoaded.gameObject.SetActive(true);
             txtReady.gameObject.SetActive(true);
@@ -88,7 +126,7 @@ public class UIContainerContentPreview : MonoBehaviour
                     break;
 
                 case ContentPreviewStatus.Download:
-                    txtDownload.gameObject.SetActive(false);
+                    txtDownloading.gameObject.SetActive(false);
                     break;
 
                 case ContentPreviewStatus.Error:
@@ -124,6 +162,11 @@ public class UIContainerContentPreview : MonoBehaviour
         {
             Debug.LogError("Singleton Error Here" + transform.name);
         }
+    }
+
+    private void Start()
+    {
+        dataContentStatus.Initialize();
     }
 
 }

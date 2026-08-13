@@ -8,6 +8,7 @@ public enum Connections
 {
     Connected,
     Disconnected,
+    Fetching,
 }
 
 public enum ContentStatus
@@ -59,6 +60,32 @@ public class APIManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(1);
+
+        APIEvents.Connection(Connections.Fetching);
+        APIEvents.ContentStatus(ContentStatus.Ready);
+
+        string url = baseURL + "/Text.txt";
+
+        using (UnityWebRequest request = UnityWebRequest.Head(url))
+        {
+            yield return request.SendWebRequest();
+
+            APIEvents.Response(((int)request.responseCode).ToString());
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                APIEvents.Connection(Connections.Connected);
+            }
+            else
+            {
+                APIEvents.Connection(Connections.Disconnected);
+            }
         }
     }
 

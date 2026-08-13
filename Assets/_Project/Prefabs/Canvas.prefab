@@ -1940,7 +1940,7 @@ MonoBehaviour:
     loadingIcon: {fileID: 1597529836997213369}
   dataContentStatus:
     txtAPIResponseReceived: {fileID: 8643196356771784100}
-    txtDownload: {fileID: 5532422498103593194}
+    txtDownloading: {fileID: 5532422498103593194}
     txtError: {fileID: 6026110311319825587}
     txtLoaded: {fileID: 8601269137482715628}
     txtReady: {fileID: 6778410121706197906}
@@ -2398,7 +2398,7 @@ GameObject:
   - component: {fileID: 5081826542270086536}
   - component: {fileID: 5532422498103593194}
   m_Layer: 0
-  m_Name: Txt Download
+  m_Name: Txt Downloading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

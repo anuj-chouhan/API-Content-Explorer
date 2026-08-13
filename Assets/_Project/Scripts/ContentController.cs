@@ -39,6 +39,7 @@ public class ContentController : MonoBehaviour
     {
         contentDisplayHelper.HandleLoadingIcon(false);
         contentDisplayHelper.RenderVideo();
+        APIEvents.ContentStatus(ContentStatus.Loaded);
     }
 
     public void LoadText()
@@ -116,5 +117,7 @@ public class ContentController : MonoBehaviour
         }
 
         contentDisplayHelper.ClearAll();
+
+        APIEvents.ContentStatus(ContentStatus.Ready);
     }
 }

@@ -23,7 +23,7 @@ public class UIContainerContentPanel : MonoBehaviour
 
         private ContentController contentController;
 
-        public void Intialize()
+        public void Initialize()
         {
             contentController = ContentController.instance;
             dropdownContentType.onValueChanged.AddListener(Dropdown);
@@ -85,6 +85,22 @@ public class UIContainerContentPanel : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI textConnectionStatus;
         [SerializeField] private TextMeshProUGUI textResponseStatus;
+
+        public void Initialize()
+        {
+            APIEvents.OnConnection += APIEvents_OnConnection;
+            APIEvents.OnResponse += APIEvents_OnResponse;
+        }
+
+        private void APIEvents_OnResponse(string Response)
+        {
+            textResponseStatus.text = Response;
+        }
+
+        private void APIEvents_OnConnection(Connections Connection)
+        {
+            textConnectionStatus.text = Connection.ToString();
+        }
     }
 
 
@@ -93,6 +109,7 @@ public class UIContainerContentPanel : MonoBehaviour
 
     private void Start()
     {
-        dataContentPanel.Intialize();
+        dataContentPanel.Initialize();
+        dataAPIStatus.Initialize();
     }
 }
