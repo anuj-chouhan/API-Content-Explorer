@@ -47,7 +47,7 @@ public static class APIEvents
 public class APIManager : MonoBehaviour
 {
     private static readonly string baseURL =
-        "https://pub-c5d5743fde7d45cc8d10aa8c2ccce425.r2.dev";
+        "https://pub-d00cc8b8d1824d78a95ef0e94b835d6d.r2.dev";
 
     public static APIManager Instance;
 
