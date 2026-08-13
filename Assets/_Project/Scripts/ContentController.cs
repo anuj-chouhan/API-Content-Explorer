@@ -33,6 +33,17 @@ public class ContentController : MonoBehaviour
         ClearContent();
 
         videoPlayer.prepareCompleted += VideoPlayerPrepareCompleted;
+
+        APIEvents.OnContentStatus += APIEvents_OnContentStatus;
+    }
+
+    private void APIEvents_OnContentStatus(ContentStatus obj)
+    {
+        if (obj == ContentStatus.Error)
+        {
+            contentDisplayHelper.HandleNoContentInfo(true);
+            contentDisplayHelper.HandleLoadingIcon(false);
+        }
     }
 
     private void VideoPlayerPrepareCompleted(VideoPlayer source)
