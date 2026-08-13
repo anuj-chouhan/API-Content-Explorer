@@ -46,7 +46,7 @@ public static class APIEvents
 public class APIManager : MonoBehaviour
 {
     private static readonly string baseURL =
-        "https://raw.githubusercontent.com/anuj-chouhan/Unity-Ar-Assets/main/HostedStuffs";
+        "https://pub-c5d5743fde7d45cc8d10aa8c2ccce425.r2.dev";
 
     public static APIManager Instance;
 
