@@ -8,6 +8,8 @@ All changes below are scoped to **desktop only** (`@media (min-width: 769px)` or
 
 Right after the existing `<link rel="stylesheet" href="TemplateData/style.css">` line, a full `<style>...</style>` block was added. This is where almost everything below lives.
 
+Also edit the title of the tab and remove Unity Web Player, and keep only API Content Explorer there. 
+
 ## 2. Desktop page background
 
 ```css
