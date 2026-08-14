@@ -79,6 +79,11 @@ public class UIContainerContentPreview : MonoBehaviour
             APIEvents.OnContentStatus += APIEvents_OnContentStatus;
         }
 
+        public void Terminate()
+        {
+            APIEvents.OnContentStatus -= APIEvents_OnContentStatus;
+        }
+
         private void APIEvents_OnContentStatus(ContentStatus ContentStatus)
         {
             txtReady.gameObject.SetActive(false);
@@ -141,6 +146,16 @@ public class UIContainerContentPreview : MonoBehaviour
     private void Start()
     {
         dataContentStatus.Initialize();
+    }
+
+    private void OnDestroy()
+    {
+        dataContentStatus.Terminate();
+    }
+
+    private void OnDisable()
+    {
+        dataContentStatus.Terminate();
     }
 
 }
