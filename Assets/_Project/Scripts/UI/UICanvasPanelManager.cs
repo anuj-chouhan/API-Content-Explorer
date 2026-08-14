@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UICanvasPanelManager : MonoBehaviour
 {
+    [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject panelOverview;
     [SerializeField] private GameObject panelExplorer;
@@ -22,6 +24,8 @@ public class UICanvasPanelManager : MonoBehaviour
 
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Camera.main;
+
+        scrollRect.gameObject.SetActive(true);
     }
 
     private enum Panels
