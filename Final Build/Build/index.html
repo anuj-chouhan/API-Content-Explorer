@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity Web Player | API Content Explorer</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      /* ==========================================================
+         Desktop presentation overrides.
+         Everything in this block is scoped to (min-width: 769px)
+         so mobile styling/behavior from TemplateData/style.css and
+         the mobile JS branch below are left completely untouched.
+         ========================================================== */
+      :root {
+        /* Adjust this value to move the fullscreen controls (icon + text)
+           up/down. Only this one value needs to change. */
+        --fullscreen-controls-offset-y: 16px;
+      }
+
+      @media (min-width: 769px) {
+        html, body {
+          background: #D8E8EA;
+        }
+
+        /* Remove Unity branding from the footer */
+        #unity-logo-title-footer {
+          display: none !important;
+        }
+
+        /* The fullscreen instruction text should look and act clickable */
+        #unity-build-title {
+          cursor: pointer;
+          user-select: none;
+        }
+
+        /* Decorative frame drawn exactly over the 1280x720 WebGL viewport.
+           It is a sibling of #unity-canvas (never the canvas itself, and
+           never a wrapper around it), so it cannot change the canvas's
+           box model or clip/alter Unity's loading UI. Its position/size
+           are set in JS to always match the canvas's real on-screen box. */
+        #unity-viewport-frame {
+          position: absolute;
+          display: none;
+          box-sizing: border-box;
+          border-radius: 18px;
+          border: 2px solid rgba(0, 0, 0, 0.12);
+          pointer-events: none;
+          z-index: 2;
+        }
+        #unity-viewport-frame.is-active {
+          display: block;
+        }
+
+        /* Loading screen: hide the Unity logo, keep + polish the bar */
+        #unity-logo {
+          display: none !important;
+        }
+
+        #unity-loading-bar {
+          z-index: 3;
+        }
+
+        #unity-progress-bar-empty {
+          position: relative;
+          background-image: none !important;
+          background-color: rgba(0, 0, 0, 0.25) !important;
+          width: 420px;
+          max-width: 70%;
+          height: 12px;
+          min-height: 12px;
+          border-radius: 999px;
+          margin: 0 auto;
+          overflow: hidden;
+          box-shadow: none;
+          padding: 0;
+          border: none;
+        }
+
+        #unity-progress-bar-full {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          background-image: none !important;
+          background-color: #3E9AAE !important;
+          height: 100% !important;
+          min-height: 12px;
+          border-radius: 999px;
+          width: 0%;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none;
+          transition: width 0.15s ease-out;
+        }
+
+        /* Fullscreen controls sit slightly below their default position.
+           Edit --fullscreen-controls-offset-y above to adjust:
+             8px  -> slightly lower
+             16px -> current/default adjustment
+             24px -> further down
+             30px -> even further down */
+        #unity-footer {
+          transform: translateY(var(--fullscreen-controls-offset-y));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=1280 height=720 tabindex="-1"></canvas>
+      <!-- Desktop-only viewport border/frame. Positioned in JS to sit
+           exactly over the canvas; never wraps or resizes the canvas. -->
+      <div id="unity-viewport-frame" aria-hidden="true"></div>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Click here to enter fullscreen</div>
+      </div>
+    </div>
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Build 1.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/Build 1.data.br",
+        frameworkUrl: buildUrl + "/Build 1.framework.js.br",
+        codeUrl: buildUrl + "/Build 1.wasm.br",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Roonty",
+        productName: "API Content Explorer",
+        productVersion: "0.1.0",
+        showBanner: unityShowBanner,
+        // errorHandler: function(err, url, line) {
+        //    alert("error " + err + " occurred at line " + line);
+        //    // Return 'true' if you handled this error and don't want Unity
+        //    // to process it further, 'false' otherwise.
+        //    return true;
+        // },
+      };
+
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      // If you would like all file writes inside Unity Application.persistentDataPath
+      // directory to automatically persist so that the contents are remembered when
+      // the user revisits the site the next time, uncomment the following line:
+      // config.autoSyncPersistentDataPath = true;
+      // This autosyncing is currently not the default behavior to avoid regressing
+      // existing user projects that might rely on the earlier manual
+      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+      // expected to change.
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        // (Unchanged from the original — desktop-only changes never run this branch.)
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
+
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
+
+
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = "1280px";
+        canvas.style.height = "720px";
+
+        // --- Desktop-only presentation helpers -------------------------
+        // Keep the decorative viewport frame and the loading bar aligned
+        // to the canvas's actual on-screen box. This never touches the
+        // canvas element itself, so it can't affect Unity's rendering,
+        // sizing, or loading UI.
+        var viewportFrame = document.querySelector("#unity-viewport-frame");
+        var loadingBarEl = document.querySelector("#unity-loading-bar");
+
+        function positionDesktopOverlays() {
+          if (viewportFrame) {
+  viewportFrame.style.left = (canvas.offsetLeft - 8) + "px";
+  viewportFrame.style.top = canvas.offsetTop + "px";
+  viewportFrame.style.width = (canvas.offsetWidth + 12) + "px";
+  viewportFrame.style.height = (canvas.offsetHeight + 6) + "px";
+  // NOTE: "is-active" (which makes the frame visible) is intentionally
+  // NOT added here. It's kept positioned and ready, but stays hidden
+  // until Unity finishes loading — see the .then() callback below.
+          }
+          if (loadingBarEl) {
+            loadingBarEl.style.position = "absolute";
+            loadingBarEl.style.left = (canvas.offsetLeft + canvas.offsetWidth / 2) + "px";
+            loadingBarEl.style.top = (canvas.offsetTop + canvas.offsetHeight / 2) + "px";
+            loadingBarEl.style.transform = "translate(-50%, -50%)";
+          }
+        }
+
+        positionDesktopOverlays();
+        window.addEventListener("resize", positionDesktopOverlays);
+      }
+
+      document.querySelector("#unity-loading-bar").style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
+                document.querySelector("#unity-loading-bar").style.display = "none";
+
+                // Now that loading is fully done, reveal the desktop
+                // viewport border/frame (it was positioned earlier, but
+                // stayed hidden so it wouldn't show during loading).
+                var viewportFrame = document.querySelector("#unity-viewport-frame");
+                if (viewportFrame) {
+                  viewportFrame.classList.add("is-active");
+                }
+
+                // Shared fullscreen trigger, wired up to both the existing
+                // fullscreen icon and the (now clickable) footer text.
+                const enterFullscreen = () => {
+                  unityInstance.SetFullscreen(1);
+                };
+                document.querySelector("#unity-fullscreen-button").onclick = enterFullscreen;
+                document.querySelector("#unity-build-title").onclick = enterFullscreen;
+
+              }).catch((message) => {
+                alert(message);
+              });
+            };
+
+      document.body.appendChild(script);
+
+    </script>
+  </body>
+</html>
