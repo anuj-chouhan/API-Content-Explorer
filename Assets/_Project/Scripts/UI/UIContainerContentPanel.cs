@@ -18,7 +18,8 @@ public class UIContainerContentPanel : MonoBehaviour
             Text,
             Image,
             Video,
-            Model
+            Model,
+            Audio
         }
 
         private ContentController contentController;
@@ -53,6 +54,10 @@ public class UIContainerContentPanel : MonoBehaviour
                 case ContentTypes.Model:
                     contentController.LoadModel();
                     break;
+
+                case ContentTypes.Audio:
+                    contentController.LoadAudio();
+                    break;
             }
         }
 
@@ -76,6 +81,9 @@ public class UIContainerContentPanel : MonoBehaviour
                     currentContentType = ContentTypes.Model;
                     break;
 
+                case 4:
+                    currentContentType = ContentTypes.Audio;
+                    break;
             }
         }
     }

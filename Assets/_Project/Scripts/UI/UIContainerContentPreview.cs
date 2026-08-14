@@ -8,6 +8,7 @@ public class UIContainerContentPreview : MonoBehaviour
     public class DataContentDisplay
     {
         [SerializeField] private GameObject infoNoContent;
+        [SerializeField] private GameObject audioPlayIcon;
         [SerializeField] private TextMeshProUGUI textText;
         [SerializeField] private Image image;
         [SerializeField] private RawImage videoRenderer;
@@ -21,6 +22,11 @@ public class UIContainerContentPreview : MonoBehaviour
         public void RenderVideo()
         {
             videoRenderer.gameObject.SetActive(true);
+        }
+
+        public void DisplayAudioIcon()
+        {
+            audioPlayIcon.gameObject.SetActive(true);
         }
 
         public void SetImage(Sprite sprite)
@@ -39,6 +45,7 @@ public class UIContainerContentPreview : MonoBehaviour
             textText.text = string.Empty;
             image.sprite = null;
 
+            audioPlayIcon.gameObject.SetActive(false);
             image.gameObject.SetActive(false);
             textText.gameObject.SetActive(false);
             videoRenderer.gameObject.SetActive(false);

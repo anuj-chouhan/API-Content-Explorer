@@ -119,6 +119,14 @@ public class APIManager : MonoBehaviour
         StartCoroutine(DownloadGLBModelCoroutine(onSuccess, onError));
     }
 
+    public void GetAudio(Action<AudioClip> onSuccess, Action onError = null)
+    {
+        StopAllFetching();
+
+        APIEvents.ContentStatus(ContentStatus.Ready);
+        StartCoroutine(DownloadAudio(onSuccess, onError));
+    }
+
     public string GetVideoURL()
     {
         StopAllFetching();
@@ -298,5 +306,55 @@ public class APIManager : MonoBehaviour
         APIEvents.ContentStatus(ContentStatus.Loaded);
 
         onSuccess?.Invoke(modelGO);
+    }
+
+    private IEnumerator DownloadAudio(Action<AudioClip> onSuccess, Action onError)
+    {
+        string endPoint = "/Audio.mp3";
+        string url = baseURL + endPoint;
+
+        APIEvents.ContentStatus(ContentStatus.Downloading);
+
+        using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.UNKNOWN))
+        {
+            yield return request.SendWebRequest();
+
+            // HTTP response has now arrived.
+            APIEvents.Response(((int)request.responseCode).ToString());
+            APIEvents.ContentStatus(ContentStatus.APIResponseReceived);
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Audio Download Failed: " + request.error);
+
+                APIEvents.Connection(Connections.Disconnected);
+                APIEvents.ContentStatus(ContentStatus.Error);
+
+                onError?.Invoke();
+            }
+            else
+            {
+                APIEvents.Connection(Connections.Connected);
+
+                AudioClip fetchedAudio = DownloadHandlerAudioClip.GetContent(request);
+
+                if (fetchedAudio == null)
+                {
+                    Debug.LogError("Audio Download Failed: AudioClip is null.");
+
+                    APIEvents.ContentStatus(ContentStatus.Error);
+
+                    onError?.Invoke();
+                }
+                else
+                {
+                    Debug.Log("Audio Loaded Successfully.");
+
+                    APIEvents.ContentStatus(ContentStatus.Loaded);
+
+                    onSuccess?.Invoke(fetchedAudio);
+                }
+            }
+        }
     }
 }

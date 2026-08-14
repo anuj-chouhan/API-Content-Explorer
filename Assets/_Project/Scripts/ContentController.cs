@@ -6,6 +6,7 @@ public class ContentController : MonoBehaviour
     [SerializeField] private Material matDependencies;
     [SerializeField] private GameObject dynamicModelParent;
     [SerializeField] private VideoPlayer videoPlayer;
+    [SerializeField] private AudioSource audioSource;
 
     public static ContentController instance;
 
@@ -112,10 +113,28 @@ public class ContentController : MonoBehaviour
         videoPlayer.url = apiManager.GetVideoURL();
     }
 
+    public void LoadAudio()
+    {
+        ClearContenHelper();
+
+        contentDisplayHelper.HandleNoContentInfo(false);
+        contentDisplayHelper.HandleLoadingIcon(true);
+
+        apiManager.GetAudio(onSuccess: (audioClip) =>
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+
+            contentDisplayHelper.DisplayAudioIcon();
+            contentDisplayHelper.HandleLoadingIcon(false);
+        });
+    }
+
     public void ClearContent()
     {
         ClearContenHelper();
         apiManager.StopAllFetching();
+
         contentDisplayHelper.HandleNoContentInfo(true);
         contentDisplayHelper.HandleLoadingIcon(false);
     }
@@ -128,6 +147,9 @@ public class ContentController : MonoBehaviour
         }
 
         contentDisplayHelper.ClearAll();
+
+        audioSource.clip = null;
+        audioSource.Stop();
 
         APIEvents.ContentStatus(ContentStatus.Ready);
     }
