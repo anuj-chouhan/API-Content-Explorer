@@ -1,68 +1,75 @@
-# Unity Runtime Content Loading Demo
+# API Content Explorer
 
-This Unity project demonstrates runtime content fetching, parsing, and display from external sources. The application dynamically loads and presents various types of assets including:
+**Runtime content loading and remote endpoint communication in Unity**
+
+API Content Explorer is a Unity project that demonstrates how an application can request resources from remote endpoints, download them at runtime, convert them into Unity-compatible assets, and present them dynamically, all without bundling that content into the build.
+
+The application supports five content types:
 
 - ✅ **Text**
 - ✅ **Images**
 - ✅ **Videos**
-- ✅ **3D Models with Animation**
+- ✅ **Audio**
+- ✅ **Animated 3D Models**
 
-All content is loaded dynamically during runtime using structured raw links, simulating API-like behavior.
+👉 **[Try It Live](https://api-content-explorer.netlify.app/)**
 
 ---
 
-## 🔧 Features Implemented
+## ✨ Highlights
 
-- 📦 **Dynamic Asset Loading**  
-  Fetch and display assets (text, images, videos, and 3D models) directly from cloud-hosted locations using raw URLs.
+- 📦 **Multi-Format Runtime Loading**
+  Fetches text, images, videos, audio, and 3D models at runtime and converts them into Unity-compatible content.
 
-- 🔁 **Runtime Parsing**  
-  Dynamically parse data and generate content at runtime without hardcoding.
+- 🔁 **Remote Resource Pipeline**
+  A complete flow from endpoint request and resource download through runtime preparation, presentation, and playback.
 
-- 🎞️ **Animated 3D Model Handling**  
-  3D models are loaded and animated in runtime to demonstrate full interactivity.
+- 📡 **Runtime Status Handling**
+  Centralized handling of connection, response, loading, download, and error states, giving users clear feedback at every stage of the loading process.
 
-- 🌐 **WebGL Support**  
-  The project is exported as a WebGL build to demonstrate cross-platform accessibility in browsers.
+- 🧭 **Interactive Explorer**
+  An Explorer interface where users choose a content type, fetch the remote resource, and preview the result directly at runtime.
+
+- 🎞️ **Animated 3D Models**
+  3D models are downloaded, instantiated, and play their animations at runtime.
+
+- 📖 **Built-In Documentation Pages**
+  Dedicated **Overview**, **Explorer**, and **Technical** pages explain the project and walk through its architecture and content pipeline.
+
+- 🌐 **Platform-Flexible Architecture**
+  The loading system is designed to support Android, iOS, desktop, and WebGL targets. The live demo runs as a WebGL build.
+
+- 🖥️ **Portfolio-Embedded Experience**
+  Hosted on Netlify and embedded directly in my portfolio, so visitors can interact with the project instead of only viewing screenshots or videos.
 
 ---
 
 ## 🚀 Getting Started
 
-### 💻 Run the Project in Unity
+### Run the Project in Unity
 
-1. **Clone or Download** this repository.
-2. Open the project in **Unity Editor (recommended version: 6000.0.47f1 or Above)**.
-3. Play the scene to see the runtime content loading system in action.
+1. **Clone or download** this repository.
+2. Open the project in **Unity 6000.3.22f1** or later.
+3. Open the **Demonstration** scene and press **Play** to see the runtime content loading system in action.
 
----
+### Try the Web Version
 
-## 🌍 WebGL Build
-
-You can access the **live WebGL demo** here:  
-👉 [WebGL Build Link](https://anuj-chouhan.github.io/Unity-Ar-Assets/ProjectBuild/)
+No installation needed. Open the **[live demo](https://api-content-explorer.netlify.app/)** in any modern desktop browser.
 
 ---
 
-## 📁 Repository Structure
+## ⚠️ Important: The `HostedStuffs` Folder
 
-### `HostedStuffs/`
-This folder contains all the external files that are fetched and loaded into the project at runtime:
+Most folders in this repository are standard parts of the Unity project. The one exception is **`HostedStuffs/`**.
 
-- **Images**
-- **Videos**
-- **3D Models**
-- **Text Files**
+This folder is **not used by Unity directly**. Instead, it holds the remote files the application fetches at runtime:
 
-These assets are accessed using raw GitHub links structured to mimic API endpoints.
+- Text files
+- Images
+- Videos
+- Audio
+- 3D models
 
-> 📝 *Note:* This folder also previously contained a JSON file used for demonstrating JSON parsing and content loading. That feature has been deprecated in favor of direct URL-based asset loading in recent commits.
+Because it lives in a public GitHub repository, each file is reachable through a raw GitHub URL. The application requests these URLs as remote endpoints, downloads the files, and converts them into Unity content while running. In other words, this folder acts as the "server" side of the demo.
 
-### `ProjectBuild/`
-This folder contains the **WebGL build output**. You can host these files on a server to access the project in a browser.
-
----
-
-## 📌 Notes
-
-- This project was completed as part of a technical task to demonstrate my ability to work with **runtime asset loading**, **remote content handling**, and **Unity**
+> 📝 **Note:** If you move, rename, or delete files in `HostedStuffs/`, the matching URLs in the project will break and that content will fail to load.
